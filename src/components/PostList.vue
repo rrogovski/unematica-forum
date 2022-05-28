@@ -1,19 +1,15 @@
 <template>
-  <div class="col-large push-top">
+  <div class="post-list">
 
-    <h1>{{ thread.title }}</h1>
-
-    <div class="post-list">
-
-      <div v-for="postId in thread.posts"
-      :key="postId"
+      <div v-for="post in posts"
+      :key="post.id"
       class="post">
 
         <div class="user-info">
-          <a href="#" class="user-name">{{ userById(postById(postId).userId).name }}</a>
+          <a href="#" class="user-name">{{ userById(post.userId).name }}</a>
 
           <a href="#">
-            <img class="avatar-large" :src="userById(postById(postId).userId).avatar" alt="avatar" srcset="">
+            <img class="avatar-large" :src="userById(post.userId).avatar" alt="avatar" srcset="">
           </a>
 
           <p class="desktop-only text-small">42 posts</p>
@@ -22,19 +18,17 @@
         <div class="post-content">
           <div>
             <p>
-              {{ postById(postId).text }}
+              {{ post.text }}
             </p>
           </div>
         </div>
 
         <div class="post-date text-faded">
-          {{ postById(postId).publishedAt }}
+          {{ post.publishedAt }}
         </div>
 
       </div>
     </div>
-
-  </div>
 </template>
 
 <script>
@@ -42,27 +36,17 @@ import sourceData from '@/data.json'
 
 export default {
   props: {
-    id: {
+    posts: {
       required: true,
-      type: String
+      type: Array
     }
   },
   data () {
     return {
-      threads: sourceData.threads,
-      posts: sourceData.posts,
       users: sourceData.users
     }
   },
-  computed: {
-    thread () {
-      return this.threads.find(thread => thread.id === this.id) // You also can get the params from this.$route.params.id
-    }
-  },
   methods: {
-    postById (postId) {
-      return this.posts.find(p => p.id === postId)
-    },
     userById (userId) {
       return this.users.find(u => u.id === userId)
     }
@@ -73,9 +57,9 @@ export default {
 <style lang="scss" scoped>
   .post-list {
     margin-top: 20px;
-}
+  }
 
-.post {
+  .post {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -84,15 +68,15 @@ export default {
     padding-bottom: 7px;
     box-shadow: 2px 2px 1px rgba(136, 136, 136, 0.09);
     margin-bottom: 20px;
-}
+  }
 
-@media (max-width: 820px) {
+  @media (max-width: 820px) {
     .post {
-        padding: 0;
+      padding: 0;
     }
-}
+  }
 
-.post .user-info {
+  .post .user-info {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -102,64 +86,64 @@ export default {
     margin-right: 5px;
 }
 
-.post .user-info > * {
+  .post .user-info > * {
     margin-bottom: 10px;
-}
+  }
 
-@media (max-width: 820px) {
+  @media (max-width: 820px) {
     .post .user-info {
-        order: -2;
-        flex-direction: row;
-        justify-content: flex-start;
-        background: rgba(73, 89, 96, 0.06);
-        margin-right: 0;
-        padding: 5px;
-        padding-left: 10px;
+      order: -2;
+      flex-direction: row;
+      justify-content: flex-start;
+      background: rgba(73, 89, 96, 0.06);
+      margin-right: 0;
+      padding: 5px;
+      padding-left: 10px;
     }
 
     .post .user-info .avatar-large {
-        height: 35px;
-        width: 35px;
-        margin-right: 5px;
-        order: 1;
+      height: 35px;
+      width: 35px;
+      margin-right: 5px;
+      order: 1;
     }
 
     .post .user-info .user-name {
-        order: 2;
+      order: 2;
     }
 
     .post .user-info > * {
-        margin-right: 5px;
-        margin-bottom: 0;
+      margin-right: 5px;
+      margin-bottom: 0;
     }
-}
+  }
 
-.post .post-date {
+  .post .post-date {
     flex-basis: 100%;
     font-size: 14px;
     text-align: right;
     margin-bottom: 5px;
     padding-right: 7px;
-}
+  }
 
-@media (max-width: 820px) {
+  @media (max-width: 820px) {
     .post .post-date {
-        order: -1;
-        flex-basis: 40%;
-        background: rgba(73, 89, 96, 0.06);
-        padding-right: 10px;
-        padding-top: 16px;
-        margin-bottom: 0px;
+      order: -1;
+      flex-basis: 40%;
+      background: rgba(73, 89, 96, 0.06);
+      padding-right: 10px;
+      padding-top: 16px;
+      margin-bottom: 0px;
     }
-}
+  }
 
-@media (max-width: 720px) {
+  @media (max-width: 720px) {
     .post {
-        padding: 0px;
+      padding: 0px;
     }
-}
+  }
 
-.post-content {
+  .post-content {
     display: flex;
     flex: 1 0 83%;
     padding-left: 15px;
@@ -168,34 +152,34 @@ export default {
     text-align: justify;
     line-height: 1.5;
     word-break: break-word;
-}
+  }
 
-.post-content h1, .post-content h2, .post-content h3 {
+  .post-content h1, .post-content h2, .post-content h3 {
     margin-bottom: 0;
-}
+  }
 
-.post-content p {
+  .post-content p {
     margin-bottom: 20px;
-}
+  }
 
-.post-content pre {
+  .post-content pre {
     display: grid;
     overflow: auto;
     word-wrap: break-word;
     border-radius: 3px;
     padding: 10px;
-}
+  }
 
-.post-content blockquote {
+  .post-content blockquote {
     margin: 25px 0px;
-}
+  }
 
-.post-content blockquote.big {
+  .post-content blockquote.big {
     display: flex;
     position: relative;
-}
+  }
 
-.post-content blockquote.big::before {
+  .post-content blockquote.big::before {
     position: absolute;
     top: -25px;
     left: -25px;
@@ -203,50 +187,50 @@ export default {
     font-family: FontAwesome;
     content: "\f10e";
     color: #263959;
-}
+  }
 
-@media (max-width: 820px) {
+  @media (max-width: 820px) {
     .post-content blockquote.big::before {
-        top: -15px;
-        left: -18px;
-        font-size: 32px;
+      top: -15px;
+      left: -18px;
+      font-size: 32px;
     }
-}
+  }
 
-.post-content blockquote.big .quote {
+  .post-content blockquote.big .quote {
     padding-left: 20px;
     padding-right: 15px;
     flex-basis: 95%;
     font-weight: 100;
     font-style: italic;
     font-size: 17px;
-}
+  }
 
-.post-content blockquote.big .author {
+  .post-content blockquote.big .author {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-}
+  }
 
-.post-content blockquote.big .author img {
+  .post-content blockquote.big .author img {
     flex: 1;
     flex-basis: 100%;
     margin-top: 10px;
     width: 80px;
     height: 80px;
-}
+  }
 
-.post-content blockquote.small {
+  .post-content blockquote.small {
     position: relative;
     flex-direction: column;
     border: 2px solid rgba(152, 152, 152, 0.15);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-}
+  }
 
-.post-content blockquote.small::before {
+  .post-content blockquote.small::before {
     position: absolute;
     top: -20px;
     left: -20px;
@@ -254,39 +238,39 @@ export default {
     font-family: FontAwesome;
     content: "\f10e";
     color: #263959;
-}
+  }
 
-@media (max-width: 820px) {
+  @media (max-width: 820px) {
     .post-content blockquote.small::before {
-        top: -18px;
-        left: -15px;
-        font-size: 32px;
+      top: -18px;
+      left: -15px;
+      font-size: 32px;
     }
-}
+  }
 
-.post-content blockquote.small .author {
+  .post-content blockquote.small .author {
     display: flex;
     flex-basis: 100%;
     padding: 3px 10px 3px 28px;
     background-color: rgba(152, 152, 152, 0.15);
     justify-content: center;
     align-items: center;
-}
+  }
 
-.post-content blockquote.small .author .time {
+  .post-content blockquote.small .author .time {
     margin-left: 10px;
-}
+  }
 
-.post-content blockquote.small .author .fa {
+  .post-content blockquote.small .author .fa {
     margin-left: auto;
     font-size: 20px;
-}
+  }
 
-.post-content blockquote.small .author .fa:hover {
+  .post-content blockquote.small .author .fa:hover {
     cursor: pointer;
-}
+  }
 
-.post-content blockquote.small .quote {
+  .post-content blockquote.small .quote {
     display: flex;
     flex-basis: 100%;
     flex-direction: column;
@@ -294,18 +278,18 @@ export default {
     font-weight: 100;
     font-style: italic;
     font-size: 17px;
-}
+  }
 
-.post-content blockquote.simple {
+  .post-content blockquote.simple {
     position: relative;
     padding: 0px 10px 0px 20px;
     font-weight: 100;
     font-style: italic;
     font-size: 17px;
     letter-spacing: .15px;
-}
+  }
 
-.post-content blockquote.simple::before {
+  .post-content blockquote.simple::before {
     position: absolute;
     top: -25px;
     left: -25px;
@@ -313,27 +297,27 @@ export default {
     font-family: FontAwesome;
     content: "\f10e";
     color: #263959;
-}
+  }
 
-@media (max-width: 820px) {
+  @media (max-width: 820px) {
     .post-content blockquote.simple::before {
-        top: -15px;
-        left: -18px;
-        font-size: 32px;
+      top: -15px;
+      left: -18px;
+      font-size: 32px;
     }
-}
+  }
 
-.post-content blockquote.simple .author {
+  .post-content blockquote.simple .author {
     display: block;
     margin-top: 10px;
     font-weight: normal;
-}
+  }
 
-.post-content blockquote.simple .author .time {
+  .post-content blockquote.simple .author .time {
     margin-left: 10px;
-}
+  }
 
-.post-listing-editor {
+  .post-listing-editor {
     flex: 1 1 83%;
-}
+  }
 </style>
