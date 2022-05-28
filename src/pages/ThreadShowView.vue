@@ -5,6 +5,22 @@
 
     <PostList :posts="threadPosts" />
 
+    <div class="col-full">
+      <form @submit.prevent="addPost">
+        <div class="form-group">
+          <textarea
+            v-model="newPostText"
+            name="new-post"
+            id="new-post"
+            cols="30"
+            rows="10"
+            class="form-input" />
+        </div>
+        <div class="form-actions">
+          <button class="btn-blue">Salvar comentário</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -24,7 +40,8 @@ export default {
   data () {
     return {
       threads: sourceData.threads,
-      posts: sourceData.posts
+      posts: sourceData.posts,
+      newPostText: ''
     }
   },
   computed: {
@@ -33,6 +50,24 @@ export default {
     },
     threadPosts () {
       return this.posts.filter(post => post.threadId === this.id)
+    }
+  },
+  methods: {
+    addPost () {
+      const postId = 'post-' + Math.random()
+
+      const post = {
+        id: postId,
+        text: this.newPostText,
+        publishedAt: Math.floor(Date.now() / 1000),
+        threadId: this.id,
+        userId: 'HJNTR1nN8tgbB148RJrPYbby8Vl1'
+
+      }
+
+      this.posts.push(post)
+      this.thread.posts.push(postId)
+      this.newPostText = ''
     }
   }
 }
