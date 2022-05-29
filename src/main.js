@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from '@/router'
 import VueTippy from 'vue-tippy'
+
 import 'tippy.js/dist/tippy.css'
 
 const forumApp = createApp(App)
@@ -21,5 +22,18 @@ forumApp.use(
     } // => Global default options * see all props
   }
 )
+
+// Registra globalmente todos os componentes de um diretório com o sufixo 'App'
+const requireComponent = require.context('./components', true, /App[A-Z]\w+\.(vue|js)$/)
+requireComponent.keys().forEach(function (fileName) {
+  let baseComponentConfig = requireComponent(fileName)
+  baseComponentConfig = baseComponentConfig.default || baseComponentConfig
+  const baseComponentName = baseComponentConfig.name || (
+    fileName
+      .replace(/^.+\//, '')
+      .replace(/\.\w+$/, '')
+  )
+  forumApp.component(baseComponentName, baseComponentConfig)
+})
 
 forumApp.mount('#app')
