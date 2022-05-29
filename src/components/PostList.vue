@@ -24,7 +24,19 @@
         </div>
 
         <div class="post-date text-faded">
-          {{ post.publishedAt }}
+          <span
+            v-tippy="{
+            content: `${humanFirendlyDate(post.publishedAt)}`,
+            arrow : true,
+            arrowType : 'round',
+            animation : 'fade',
+            theme: 'light',
+            placement : 'top',
+            followCursor : true
+          }"
+          >
+            {{ diffForHumans(post.publishedAt) }}
+          </span>
         </div>
 
       </div>
@@ -33,6 +45,14 @@
 
 <script>
 import sourceData from '@/data.json'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import ptbr from 'dayjs/locale/pt-br'
+import localizedDate from 'dayjs/plugin/localizedFormat'
+
+dayjs.locale(ptbr)
+dayjs.extend(relativeTime)
+dayjs.extend(localizedDate)
 
 export default {
   props: {
@@ -49,6 +69,23 @@ export default {
   methods: {
     userById (userId) {
       return this.users.find(u => u.id === userId)
+    },
+    diffForHumans (timestamp) {
+      return dayjs.unix(timestamp).fromNow()
+    },
+    humanFirendlyDate (timestamp) {
+      return dayjs.unix(timestamp).format('llll')
+      // return new Intl.DateTimeFormat(
+      //   'pt-BR',
+      //   {
+      //     weekday: 'long',
+      //     hour: 'numeric',
+      //     minute: 'numeric',
+      //     month: 'long',
+      //     day: '2-digit',
+      //     year: 'numeric'
+      //   }
+      // ).format(new Date(1594035908 * 1000))
     }
   }
 }
