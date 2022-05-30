@@ -14,7 +14,8 @@
     "dayjs": "^1.11.2",
     "vue": "^3.2.13",
     "vue-router": "4",
-    "vue-tippy": "^6.0.0-alpha.58"
+    "vue-tippy": "^6.0.0-alpha.58",
+    "vuex": "4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
