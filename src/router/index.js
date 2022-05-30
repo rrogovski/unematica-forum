@@ -1,14 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import sourceData from '@/data.json'
+
 import NotFound from '@/pages/NotFoundView'
 import Home from '@/pages/HomeView'
 import ThreadShow from '@/pages/ThreadShowView'
-import sourceData from '@/data.json'
+import Forum from '@/pages/ForumView'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/forum/:id',
+    name: 'Forum',
+    component: Forum,
+    props: true
   },
   {
     path: '/thread/:id',

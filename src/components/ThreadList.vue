@@ -8,7 +8,7 @@
           <div class="thread" v-for="thread in threads" :key="thread.id">
               <div>
                   <p>
-                      <router-link :to="{name: 'ThreadShow', params: { id: thread.id }}">{{ thread.title }}}</router-link>
+                      <router-link :to="{name: 'ThreadShow', params: { id: thread.id }}">{{ thread.title }}</router-link>
                   </p>
                   <p class="text-faded text-xsmall">
                       Por <a href="#">{{ userById(thread.userId).name }}</a>, <app-date :timestamp="thread.publishedAt" />.
