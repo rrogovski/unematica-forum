@@ -1,5 +1,5 @@
 <template>
-  <h1>Bem-vindo ao Unemática</h1>
+  <h1 class="push-top">Bem-vindo ao Unemática</h1>
   <CategoryList :categories="categories" />
 </template>
 
