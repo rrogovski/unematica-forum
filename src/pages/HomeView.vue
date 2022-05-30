@@ -1,17 +1,17 @@
 <template>
   <h1>Bem-vindo ao Unemática</h1>
-  <ForumList :forums="forums" />
+  <CategoryList :categories="categories" />
 </template>
 
 <script>
-import ForumList from '@/components/ForumList'
+import CategoryList from '@/components/CategoryList'
 import sourceData from '@/data.json'
 
 export default {
-  components: { ForumList },
+  components: { CategoryList },
   data () {
     return {
-      forums: sourceData.forums
+      categories: sourceData.categories
     }
   }
 }
