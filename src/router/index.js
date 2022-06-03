@@ -6,12 +6,18 @@ import Home from '@/pages/HomeView'
 import ThreadShow from '@/pages/ThreadShowView'
 import Forum from '@/pages/ForumView'
 import Category from '@/pages/CategoryView'
+import Profile from '@/pages/ProfileView'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/me',
+    name: 'Profile',
+    component: Profile
   },
   {
     path: '/category/:id',
