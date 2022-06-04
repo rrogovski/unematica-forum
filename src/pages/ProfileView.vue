@@ -13,7 +13,7 @@
 
               <div class="profile-header">
                   <span class="text-lead">
-                      Joker's recent activity
+                      Atividades recente de {{ user.username }}
                   </span>
                   <a href="#">See only started threads?</a>
               </div>
