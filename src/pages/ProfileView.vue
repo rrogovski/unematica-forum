@@ -5,6 +5,8 @@
 
             <user-profile-card :user="user" />
 
+            <user-profile-card-editor :user="user" />
+
               <p class="text-xsmall text-faded text-center">Member since june 2003, last visited 4 hours ago</p>
 
               <div class="text-center">
@@ -32,11 +34,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PostList from '@/components/PostList.vue'
 import UserProfileCard from '@/components/UserProfileCard.vue'
-import { mapGetters } from 'vuex'
+import UserProfileCardEditor from '@/components/UserProfileCardEditor.vue'
 export default {
-  components: { PostList, UserProfileCard },
+  components: { PostList, UserProfileCard, UserProfileCardEditor },
   computed: {
     ...mapGetters({ user: 'authUser' })
   }
