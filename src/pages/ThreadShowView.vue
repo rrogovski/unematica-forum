@@ -12,6 +12,11 @@
       </router-link>
     </h1>
 
+    <p>
+        By <a href="#" class="link-unstyled">{{ thread.author.name }}</a>, <app-date :timestamp="thread.publishedAt" />.
+        <span style="float:right; margin-top: 2px;" class="hide-mobile text-faded text-small">{{ thread.repliesCount }} repondido por {{ thread.contributorsCount }} participantes</span>
+    </p>
+
     <post-list :posts="threadPosts" />
 
     <post-editor @save="addPost" />
@@ -40,7 +45,7 @@ export default {
       return this.$store.state.posts
     },
     thread () {
-      return this.threads.find(thread => thread.id === this.id) // You also can get the params from this.$route.params.id
+      return this.$store.getters.thread(this.id)
     },
     threadPosts () {
       return this.posts.filter(post => post.threadId === this.id)
