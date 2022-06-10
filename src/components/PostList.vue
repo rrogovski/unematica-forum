@@ -12,7 +12,8 @@
             <img class="avatar-large" :src="userById(post.userId).avatar" alt="avatar" srcset="">
           </a>
 
-          <p class="desktop-only text-small">42 posts</p>
+          <p class="desktop-only text-small">{{ userById(post.userId).postsCount }} repostas</p>
+          <p class="desktop-only text-small">{{ userById(post.userId).threadsCount }} tópicos</p>
         </div>
 
         <div class="post-content">
@@ -41,7 +42,7 @@ export default {
   },
   methods: {
     userById (userId) {
-      return this.users.find(u => u.id === userId)
+      return this.$store.getters.user(userId)
     }
   },
   computed: {
