@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     diffForHumans () {
-      return dayjs.unix(this.timestamp).fromNow()
+      return this.timestamp ? dayjs.unix(this.timestamp).fromNow() : '...'
     },
     humanFirendlyDate () {
       return dayjs.unix(this.timestamp).format('llll')

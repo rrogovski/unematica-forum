@@ -1,4 +1,8 @@
-export const findById = (resources, id) => resources.find(curr => curr.id === id)
+export const findById = (resources, id) => {
+  if (!resources) return null
+
+  return resources.find(curr => curr.id === id)
+}
 
 export const upsert = (resources, resourece) => {
   const index = resources.findIndex(curr => curr.id === resourece.id)
