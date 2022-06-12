@@ -27,7 +27,7 @@ dayjs.extend(localizedDate)
 export default {
   props: {
     timestamp: {
-      type: Number,
+      type: [Number, Object],
       required: true
     }
   },
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     diffForHumans () {
-      return this.timestamp ? dayjs.unix(this.timestamp).fromNow() : '...'
+      return dayjs.unix(this.timestamp).fromNow()
     },
     humanFirendlyDate () {
       return dayjs.unix(this.timestamp).format('llll')
