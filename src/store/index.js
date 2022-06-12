@@ -109,6 +109,9 @@ export default createStore({
     fetchPosts ({ dispatch }, { ids }) {
       return dispatch('fetchItems', { resource: 'posts', ids, emoji: '💭' })
     },
+    fetchForums ({ dispatch }, { ids }) {
+      return dispatch('fetchItems', { resource: 'forums', ids, emoji: '🏁' })
+    },
     fetchPostsByThreadId ({ commit, dispatch }, { threadId }) {
       process.env.NODE_ENV === 'development' && console.log('🔥💭 threadId => ', threadId)
       return new Promise((resolve) => {
@@ -140,7 +143,6 @@ export default createStore({
       return new Promise((resolve) => {
         const users = []
         getDocs(query(collection(db, 'users'), where(documentId(), 'in', usersIds))).then((querySnapshot) => {
-          console.log(querySnapshot)
           querySnapshot.forEach(doc => {
             const user = { id: doc.id, ...doc.data() }
             process.env.NODE_ENV === 'development' && console.log('🔥🙋 => ', user)
@@ -148,6 +150,21 @@ export default createStore({
             users.push(user)
           })
           resolve(users)
+        })
+      })
+    },
+    fetchAllCategories ({ commit }) {
+      process.env.NODE_ENV === 'development' && console.log('🔥', '🏷', 'all')
+
+      return new Promise((resolve) => {
+        getDocs(collection(db, 'categories')).then((querySnapshot) => {
+          const categories = querySnapshot.docs.map(doc => {
+            const item = { id: doc.id, ...doc.data() }
+            commit('setItem', { resource: 'categories', item })
+            return item
+          })
+
+          resolve(categories)
         })
       })
     },
