@@ -4,6 +4,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import CategoryList from '@/components/CategoryList'
 
 export default {
@@ -13,10 +14,15 @@ export default {
       return this.$store.state.categories
     }
   },
-  async beforeCreate () {
-    const categories = await this.$store.dispatch('fetchAllCategories')
+  methods: {
+    // To map actions to methods with other names
+    // ...mapActions({getCatas: 'fetchAllCategories', getForums: 'fetchForums'})
+    ...mapActions(['fetchAllCategories', 'fetchForums'])
+  },
+  async created () {
+    const categories = await this.fetchAllCategories()
     const forumsIds = categories.map(category => category.forums).flat()
-    this.$store.dispatch('fetchForums', { ids: forumsIds })
+    this.fetchForums({ ids: forumsIds })
   }
 }
 </script>

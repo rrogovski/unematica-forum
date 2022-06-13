@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import ForumList from '@/components/ForumList.vue'
 
 export default {
@@ -23,13 +24,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['fetchCategory', 'fetchForums']),
     getForumsForCategory (category) {
       return this.$store.state.forums.filter(forum => forum.categoryId === category.id)
     }
   },
   async created () {
-    const category = await this.$store.dispatch('fetchCategory', { id: this.id })
-    this.$store.dispatch('fetchForums', { ids: category.forums })
+    const category = await this.fetchCategory({ id: this.id })
+    this.fetchForums({ ids: category.forums })
   }
 }
 </script>

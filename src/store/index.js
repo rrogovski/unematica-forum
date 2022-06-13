@@ -168,7 +168,7 @@ export default createStore({
               ...doc.data()
             }
 
-            await dispatch('fetchUser', { id: post.userId })
+            // await dispatch('fetchUser', { id: post.userId })
             commit('setItem', { resource: 'posts', item: post })
             resolve(post)
           })

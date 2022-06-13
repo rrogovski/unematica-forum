@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import PostList from '@/components/PostList.vue'
 import PostEditor from '@/components/PostEditor.vue'
 
@@ -52,27 +53,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['fetchThread', 'fetchUsers', 'fetchPosts', 'createPost', 'fetchPostsByThreadId']),
     addPost (eventData) {
       const post = {
         ...eventData.post,
         threadId: this.id
       }
-      this.$store.dispatch('createPost', post)
+      this.createPost(post)
     }
   },
   async created () {
-    const thread = await this.$store.dispatch('fetchThread', { id: this.id })
-    this.$store.dispatch('fetchUser', { id: thread.userId })
-
-    // thread.posts.forEach(async (postId) => {
-    //   const post = await this.$store.dispatch('fetchPost', { id: postId })
-    //   this.$store.dispatch('fetchUser', { id: post.userId })
-    // })
-
-    await this.$store.dispatch('fetchPostsByThreadId', { threadId: this.id })
-    // const posts = await this.$store.dispatch('fetchPosts', { ids: thread.posts })
-    // const users = posts.map(post => post.userId)
-    // this.$store.dispatch('fetchUsers', { ids: users })
+    const thread = await this.fetchThread({ id: this.id })
+    const posts = await this.fetchPosts({ ids: thread.posts })
+    const users = posts.map(post => post.userId).concat(thread.userId)
+    this.fetchUsers({ ids: users })
+    await this.fetchPostsByThreadId({ threadId: this.id })
   }
 }
 </script>
