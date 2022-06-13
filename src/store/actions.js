@@ -1,7 +1,7 @@
 import { collection, doc, query, where, getDoc, getDocs, documentId, setDoc, updateDoc, addDoc, arrayUnion, writeBatch, serverTimestamp, increment } from 'firebase/firestore'
 import { db } from '@/helpers/firebase'
 
-import { findById } from '@/helpers'
+import { docToResource, findById } from '@/helpers'
 
 export default {
   async createPost ({ commit, state }, post) {
@@ -57,13 +57,21 @@ export default {
   async updateThread ({ commit, state }, { title, text, id }) {
     const thread = findById(state.threads, id)
     const post = findById(state.posts, thread.posts[0])
-    const updatedThread = { ...thread, title }
-    const updatedPost = { ...post, text }
+    let updatedThread = { ...thread, title }
+    let updatedPost = { ...post, text }
+    const threadRef = doc(db, 'threads', id)
+    const postRef = doc(db, 'posts', post.id)
+    const batch = writeBatch(db)
+    batch.update(threadRef, updatedThread)
+    batch.update(postRef, updatedPost)
+    await batch.commit()
+    updatedThread = await getDoc(threadRef)
+    updatedPost = await getDoc(postRef)
 
     commit('setItem', { resource: 'threads', item: updatedThread })
     commit('setItem', { resource: 'posts', item: updatedPost })
 
-    return updatedThread
+    return docToResource(updatedThread)
   },
   updateUser ({ commit }, user) {
     commit('setItem', { resource: 'users', item: user })
