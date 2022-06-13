@@ -1,15 +1,29 @@
-import { collection, doc, query, where, getDoc, getDocs, documentId } from 'firebase/firestore'
+import { collection, doc, query, where, getDoc, getDocs, documentId, setDoc, updateDoc, addDoc, arrayUnion, writeBatch, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/helpers/firebase'
 
 import { findById } from '@/helpers'
 
 export default {
-  createPost ({ commit, state }, post) {
-    post.id = 'post-' + Math.random()
+  async createPost ({ commit, state }, post) {
     post.userId = state.authId
-    post.publishedAt = Math.floor(Date.now() / 1000)
-    commit('setItem', { resource: 'posts', item: post })
-    commit('appendPostToThread', { childId: post.id, parentId: post.threadId })
+    post.publishedAt = serverTimestamp()
+    post.firstInThread = post.firstInThread || false
+    const batch = writeBatch(db)
+    const postRef = doc(collection(db, 'posts'))
+    const threadRef = doc(db, 'threads', post.threadId)
+    batch.set(postRef, post)
+    const threadUpdates = {
+      posts: arrayUnion(postRef.id)
+    }
+    if (!post.firstInThread) {
+      threadUpdates.contributors = arrayUnion(state.authId)
+    }
+    batch.update(threadRef, threadUpdates)
+    await batch.commit()
+    const newPost = await getDoc(postRef)
+
+    commit('setItem', { resource: 'posts', item: { ...post, id: newPost.id } })
+    commit('appendPostToThread', { childId: newPost.id, parentId: post.threadId })
     commit('appendContributorToThread', { childId: state.authId, parentId: post.threadId })
   },
   async createThread ({ commit, state, dispatch }, { text, title, forumId }) {
