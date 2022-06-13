@@ -1,4 +1,4 @@
-import { collection, doc, query, where, getDoc, getDocs, documentId, setDoc, updateDoc, addDoc, arrayUnion, writeBatch, serverTimestamp } from 'firebase/firestore'
+import { collection, doc, query, where, getDoc, getDocs, documentId, setDoc, updateDoc, addDoc, arrayUnion, writeBatch, serverTimestamp, increment } from 'firebase/firestore'
 import { db } from '@/helpers/firebase'
 
 import { findById } from '@/helpers'
@@ -11,6 +11,7 @@ export default {
     const batch = writeBatch(db)
     const postRef = doc(collection(db, 'posts'))
     const threadRef = doc(db, 'threads', post.threadId)
+    const userRef = doc(db, 'users', state.authId)
     batch.set(postRef, post)
     const threadUpdates = {
       posts: arrayUnion(postRef.id)
@@ -19,6 +20,9 @@ export default {
       threadUpdates.contributors = arrayUnion(state.authId)
     }
     batch.update(threadRef, threadUpdates)
+    batch.update(userRef, {
+      postsCount: increment(1)
+    })
     await batch.commit()
     const newPost = await getDoc(postRef)
 

@@ -18,7 +18,7 @@ export default {
         },
         // authUser.postsCount
         get postsCount () {
-          return this.posts.length
+          return user.postsCount || 0
         },
         // authUser.threads
         get threads () {
@@ -26,7 +26,7 @@ export default {
         },
         // authUser.threadsCount
         get threadsCount () {
-          return this.threads.length
+          return user.threads?.length || 0
         }
       }
     }
