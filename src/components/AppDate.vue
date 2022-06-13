@@ -1,7 +1,7 @@
 <template>
   <span
       v-tippy="{
-      content: `${humanFirendlyDate()}`,
+      content: `${humanFirendlyDate}`,
       arrow : true,
       arrowType : 'round',
       animation : 'fade',
@@ -10,7 +10,7 @@
       followCursor : true
     }"
     >
-      {{ diffForHumans() }}
+      {{ diffForHumans }}
     </span>
 </template>
 
@@ -35,12 +35,15 @@ export default {
     return {
     }
   },
-  methods: {
+  computed: {
+    normalizedTimestamp () {
+      return this.timestamp?.seconds || this.timestamp
+    },
     diffForHumans () {
-      return dayjs.unix(this.timestamp).fromNow()
+      return dayjs.unix(this.normalizedTimestamp).fromNow()
     },
     humanFirendlyDate () {
-      return dayjs.unix(this.timestamp).format('llll')
+      return dayjs.unix(this.normalizedTimestamp).format('llll')
       // return new Intl.DateTimeFormat(
       //   'pt-BR',
       //   {
@@ -54,7 +57,6 @@ export default {
       // ).format(new Date(this.timestamp * 1000))
     }
   }
-
 }
 </script>
 

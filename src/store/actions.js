@@ -22,7 +22,7 @@ export default {
     await batch.commit()
     const newPost = await getDoc(postRef)
 
-    commit('setItem', { resource: 'posts', item: { ...post, id: newPost.id } })
+    commit('setItem', { resource: 'posts', item: { ...newPost.data(), id: newPost.id } })
     commit('appendPostToThread', { childId: newPost.id, parentId: post.threadId })
     commit('appendContributorToThread', { childId: state.authId, parentId: post.threadId })
   },
