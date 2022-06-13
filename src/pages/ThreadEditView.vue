@@ -24,7 +24,7 @@ export default {
       return this.$store.state.threads.find(thread => thread.id === this.id)
     },
     text () {
-      const post = this.$store.state.posts.find(post => post.id === this.thread.posts[0])
+      const post = this.$store.state.posts.find(p => p.id === this.thread.posts[0])
       return post ? post.text : ''
     }
   },

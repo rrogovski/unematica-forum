@@ -5,7 +5,7 @@
       :key="post.id"
       class="post">
 
-        <div class="user-info">
+        <div v-if="userById(post.userId)" class="user-info">
           <a href="#" class="user-name">{{ userById(post.userId).name }}</a>
 
           <a href="#">
@@ -25,7 +25,7 @@
         </div>
 
         <div class="post-date text-faded">
-          <app-date :timestamp="post.publishedAt" />
+          <app-date v-if="post.publishedAt" :timestamp="post.publishedAt" />
         </div>
 
       </div>

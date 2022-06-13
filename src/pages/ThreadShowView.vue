@@ -13,7 +13,7 @@
     </h1>
 
     <p>
-        Por <a href="#" class="link-unstyled">{{ thread.author?.name }}</a>, <app-date :timestamp="thread.publishedAt" />.
+        Por <a href="#" class="link-unstyled">{{ thread.author?.name }}</a>, <app-date v-if="thread.publishedAt" :timestamp="thread.publishedAt" />.
         <span style="float:right; margin-top: 2px;" class="hide-mobile text-faded text-small">{{ thread.repliesCount }} {{thread.repliesCount > 1 ? 'respostas' : 'resposta'}} por {{ thread.contributorsCount }} participantes</span>
     </p>
 
