@@ -97,20 +97,66 @@ export default createStore({
 
       return updatedThread
     },
+    updateUser ({ commit }, user) {
+      commit('setItem', { resource: 'users', item: user })
+    },
+    // Fetch Single Resource
+    fetchCategory ({ dispatch }, { id }) {
+      return dispatch('fetchItem', { resource: 'categories', id, emoji: '🏷' })
+    },
+    fetchForum ({ dispatch }, { id }) {
+      return dispatch('fetchItem', { resource: 'forums', id, emoji: '🏁' })
+    },
     fetchThread ({ dispatch }, { id }) {
       return dispatch('fetchItem', { resource: 'threads', id, emoji: '📄' })
-    },
-    fetchThreads ({ dispatch }, { ids }) {
-      return dispatch('fetchItems', { resource: 'threads', ids, emoji: '📄' })
     },
     fetchPost ({ dispatch }, { id }) {
       return dispatch('fetchItem', { resource: 'posts', id, emoji: '💭' })
     },
-    fetchPosts ({ dispatch }, { ids }) {
-      return dispatch('fetchItems', { resource: 'posts', ids, emoji: '💭' })
+    fetchUser ({ dispatch }, { id }) {
+      return dispatch('fetchItem', { resource: 'users', id, emoji: '🙋' })
+    },
+    // Fetch Multiple Resources
+    fetchAllCategories ({ commit }) {
+      process.env.NODE_ENV === 'development' && console.log('🔥', '🏷', 'all')
+
+      return new Promise((resolve) => {
+        getDocs(collection(db, 'categories')).then((querySnapshot) => {
+          const categories = querySnapshot.docs.map(doc => {
+            const item = { id: doc.id, ...doc.data() }
+            commit('setItem', { resource: 'categories', item })
+            return item
+          })
+
+          resolve(categories)
+        })
+      })
     },
     fetchForums ({ dispatch }, { ids }) {
       return dispatch('fetchItems', { resource: 'forums', ids, emoji: '🏁' })
+    },
+    fetchThreads ({ dispatch }, { ids }) {
+      return dispatch('fetchItems', { resource: 'threads', ids, emoji: '📄' })
+    },
+    fetchPosts ({ dispatch }, { ids }) {
+      return dispatch('fetchItems', { resource: 'posts', ids, emoji: '💭' })
+    },
+    fetchUsers ({ dispatch }, { ids }) {
+      return dispatch('fetchItems', { resource: 'users', ids, emoji: '🙋' })
+    },
+    fetchThreadsByForumId ({ commit }, { forumId }) {
+      process.env.NODE_ENV === 'development' && console.log('🔥📄 forumId => ', forumId)
+      return new Promise((resolve) => {
+        getDocs(query(collection(db, 'threads'), where('forumId', '==', forumId))).then((querySnapshot) => {
+          const threads = querySnapshot.docs.map((doc) => {
+            const item = { id: doc.id, ...doc.data() }
+            commit('setItem', { resource: 'categories', item })
+            return item
+          })
+
+          resolve(threads)
+        })
+      })
     },
     fetchPostsByThreadId ({ commit, dispatch }, { threadId }) {
       process.env.NODE_ENV === 'development' && console.log('🔥💭 threadId => ', threadId)
@@ -129,15 +175,6 @@ export default createStore({
         })
       })
     },
-    fetchUser ({ dispatch }, { id }) {
-      return dispatch('fetchItem', { resource: 'users', id, emoji: '🙋' })
-    },
-    fetchUsers ({ dispatch }, { ids }) {
-      return dispatch('fetchItems', { resource: 'users', ids, emoji: '🙋' })
-    },
-    updateUser ({ commit }, user) {
-      commit('setItem', { resource: 'users', item: user })
-    },
     fetchUsersByIds ({ commit }, { usersIds }) {
       process.env.NODE_ENV === 'development' && console.log('🔥🙋 [usersIds] => ', usersIds)
       return new Promise((resolve) => {
@@ -150,21 +187,6 @@ export default createStore({
             users.push(user)
           })
           resolve(users)
-        })
-      })
-    },
-    fetchAllCategories ({ commit }) {
-      process.env.NODE_ENV === 'development' && console.log('🔥', '🏷', 'all')
-
-      return new Promise((resolve) => {
-        getDocs(collection(db, 'categories')).then((querySnapshot) => {
-          const categories = querySnapshot.docs.map(doc => {
-            const item = { id: doc.id, ...doc.data() }
-            commit('setItem', { resource: 'categories', item })
-            return item
-          })
-
-          resolve(categories)
         })
       })
     },
@@ -199,6 +221,12 @@ export default createStore({
 function makeAppendChildToParentMutation ({ parent, child }) {
   return (state, { childId, parentId }) => {
     const resource = findById(state[parent], parentId)
+
+    if (!resource) {
+      console.warn(`Appeding ${child} ${childId} to ${parent} ${parentId} failed because the parent didn't exist`)
+      return
+    }
+
     resource[child] = resource[child] || []
 
     if (!resource[child].includes(childId)) {
