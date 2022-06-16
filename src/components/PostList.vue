@@ -18,23 +18,31 @@
 
         <div class="post-content">
           <div class="col-full">
-            <post-editor v-if="editing === post.id" :post="post" />
+            <post-editor
+              v-if="editing === post.id"
+              :post="post"
+              @save="handleUpdatePost"
+            />
             <p v-else>
               {{ post.text }}
             </p>
           </div>
-          <a
-            @click.prevent="toggleEditMode(post.id)"
-            href="#"
-            style="margin-left: auto; padding-left:10px;"
-            class="link-unstyled"
-            title="Make a change"
-          >
+          <div>
+            <a
+              v-if="post.userId === $store.state.authId"
+              @click.prevent="toggleEditMode(post.id)"
+              href="#"
+              style="margin-left: auto; padding-left:10px;"
+              class="link-unstyled"
+              v-tippy="{content: `Editar`}"
+            >
             <fa-icon icon="pencil-alt" />
           </a>
+          </div>
         </div>
 
         <div class="post-date text-faded">
+          <div v-if="post.edited?.at" class="edition-info">Editado</div>
           <app-date v-if="post.publishedAt" :timestamp="post.publishedAt" />
         </div>
 
@@ -44,6 +52,7 @@
 
 <script>
 import PostEditor from '@/components/PostEditor.vue'
+import { mapActions } from 'vuex'
 export default {
   components: { PostEditor },
   props: {
@@ -58,11 +67,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['updatePost']),
     userById (userId) {
       return this.$store.getters.user(userId)
     },
     toggleEditMode (id) {
       this.editing = id === this.editing ? null : id
+    },
+    handleUpdatePost (event) {
+      this.updatePost(event.post)
+      this.editing = null
     }
   },
   computed: {

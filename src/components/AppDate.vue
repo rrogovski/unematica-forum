@@ -1,14 +1,6 @@
 <template>
   <span
-      v-tippy="{
-      content: `${humanFirendlyDate}`,
-      arrow : true,
-      arrowType : 'round',
-      animation : 'fade',
-      theme: 'light',
-      placement : 'top',
-      followCursor : true
-    }"
+      v-tippy="{content: `${humanFirendlyDate}`}"
     >
       {{ diffForHumans }}
     </span>

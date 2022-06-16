@@ -10,8 +10,12 @@ export default (app) => {
       component: 'tippy', // => <tippy/>
       componentSingleton: 'tippy-singleton', // => <tippy-singleton/>,
       defaultProps: {
-        placement: 'auto-end',
-        allowHTML: true
+        arrow: true,
+        arrowType: 'round',
+        animation: 'fade',
+        theme: 'light',
+        placement: 'top',
+        followCursor: true
       } // => Global default options * see all props
     }
   )

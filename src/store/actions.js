@@ -76,6 +76,26 @@ export default {
   updateUser ({ commit }, user) {
     commit('setItem', { resource: 'users', item: user })
   },
+  async updatePost ({ commit, state }, { text, id }) {
+    const postOld = findById(state.posts, id)
+    let updatedPost = {
+      text,
+      edited: {
+        at: serverTimestamp(),
+        by: state.authId,
+        moderator: false
+      },
+      history: arrayUnion({ text: postOld.text })
+    }
+
+    const postRef = doc(db, 'posts', id)
+    const batch = writeBatch(db)
+    batch.update(postRef, updatedPost)
+    await batch.commit()
+    updatedPost = await getDoc(postRef)
+
+    commit('setItem', { resource: 'posts', item: updatedPost })
+  },
   // Fetch Single Resource
   fetchCategory: ({ dispatch }, { id }) => dispatch('fetchItem', { resource: 'categories', id, emoji: '🏷' }),
   fetchForum: ({ dispatch }, { id }) => dispatch('fetchItem', { resource: 'forums', id, emoji: '🏁' }),
