@@ -7,7 +7,8 @@
   "scripts": {
     "serve": "yarn lint --fix && vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "db:seed": "firebase firestore:delete --all-collections --force && node firestoreImport"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
