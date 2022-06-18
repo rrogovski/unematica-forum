@@ -8,6 +8,7 @@ import ThreadEdit from '@/pages/ThreadEditView'
 import Forum from '@/pages/ForumView'
 import Category from '@/pages/CategoryView'
 import Profile from '@/pages/ProfileView'
+import Register from '@/pages/RegisterView'
 import store from '@/store'
 
 const routes = [
@@ -74,6 +75,11 @@ const routes = [
     name: 'ThreadEdit',
     component: ThreadEdit,
     props: true
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   },
   {
     path: '/:pathMatch(.*)*',
