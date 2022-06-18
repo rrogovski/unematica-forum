@@ -175,7 +175,7 @@ export default {
     return new Promise((resolve) => {
       const docRef = doc(db, resource, id)
       const unsubscribe = onSnapshot(docRef, doc => {
-        console.log('snapshot => ', id)
+        process.env.NODE_ENV === 'development' && console.log('📝 snapshot => ', id)
         const item = { id: doc.id, ...doc.data() }
         commit('setItem', { resource, item })
         resolve(item)
