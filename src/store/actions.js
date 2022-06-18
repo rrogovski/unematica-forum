@@ -1,4 +1,4 @@
-import { collection, doc, query, where, getDoc, getDocs, documentId, setDoc, updateDoc, addDoc, arrayUnion, writeBatch, serverTimestamp, increment } from 'firebase/firestore'
+import { collection, doc, query, where, getDoc, getDocs, documentId, setDoc, updateDoc, addDoc, arrayUnion, writeBatch, serverTimestamp, increment, onSnapshot } from 'firebase/firestore'
 import { db } from '@/helpers/firebase'
 
 import { docToResource, findById } from '@/helpers'
@@ -173,16 +173,34 @@ export default {
     process.env.NODE_ENV === 'development' && console.log(`🔥 ${emoji} ${resource}: id => `, id)
 
     return new Promise((resolve) => {
-      getDoc(doc(db, resource, id)).then((docSnap) => {
-        const item = { id: docSnap.id, ...docSnap.data() }
-        commit('setItem', { resource, id, item })
+      const docRef = doc(db, resource, id)
+      const unsubscribe = onSnapshot(docRef, doc => {
+        console.log('snapshot => ', id)
+        const item = { id: doc.id, ...doc.data() }
+        commit('setItem', { resource, item })
         resolve(item)
       })
+
+      commit('appendUnsubscribe', { unsubscribe })
+
+      // If dont want to use snapshot
+      // getDoc(doc(db, resource, id)).then((docSnap) => {
+      //   const item = { id: docSnap.id, ...docSnap.data() }
+      //   commit('setItem', { resource, id, item })
+      //   resolve(item)
+      // })
     })
   },
   fetchItems: ({ dispatch }, { ids, emoji, resource }) => {
     process.env.NODE_ENV === 'development' && console.log(`🔥 ${emoji} ${resource}: ids => `, ids)
 
     return Promise.all(ids.map(id => dispatch('fetchItem', { id, emoji, resource })))
+  },
+  async unsubscribeAllSnapshots ({ state, commit }) {
+    state.unsubscribes.forEach(unsubscribe => unsubscribe())
+    commit('clearAllUnsubscribes')
+  },
+  clearItems ({ commit }, { modules = [] }) {
+    commit('clearItems', { modules })
   }
 }

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import sourceData from '@/data.json'
 
 import NotFound from '@/pages/NotFoundView'
 import Home from '@/pages/HomeView'
@@ -9,6 +8,7 @@ import ThreadEdit from '@/pages/ThreadEditView'
 import Forum from '@/pages/ForumView'
 import Category from '@/pages/CategoryView'
 import Profile from '@/pages/ProfileView'
+import store from '@/store'
 
 const routes = [
   {
@@ -94,6 +94,10 @@ const router = createRouter({
 
     return scroll
   }
+})
+
+router.beforeEach(() => {
+  store.dispatch('unsubscribeAllSnapshots')
 })
 
 export default router
