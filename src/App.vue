@@ -2,13 +2,13 @@
 <the-navbar />
   <div class="container">
     <router-view v-show="showPage" @ready="showPage = true" />
-    <div v-show="!showPage" class="push-top">loading...</div>
+    <app-spinner-pacman v-show="!showPage" />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import TheNavbar from './components/TheNavbar.vue'
+import TheNavbar from '@/components/TheNavbar.vue'
 export default {
   components: { TheNavbar },
   name: 'App',
