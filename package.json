@@ -1,8 +1,8 @@
 {
-  "name": "vue3-masterclass",
+  "name": "unematica-forum",
   "version": "0.1.0",
   "private": true,
-  "description": "💬 It's a forum with Vu3",
+  "description": "💬 It's a forum with Vue3",
   "author": "Rodrigo Rogovski",
   "scripts": {
     "serve": "yarn lint --fix && vue-cli-service serve",
