@@ -1,6 +1,8 @@
 <template>
+<div v-if="ready" class="container">
   <h1 class="push-top">Bem-vindo ao Unemática</h1>
   <CategoryList :categories="categories" />
+</div>
 </template>
 
 <script>
@@ -9,6 +11,11 @@ import CategoryList from '@/components/CategoryList'
 
 export default {
   components: { CategoryList },
+  data () {
+    return {
+      ready: false
+    }
+  },
   computed: {
     categories () {
       return this.$store.state.categories
@@ -22,7 +29,8 @@ export default {
   async created () {
     const categories = await this.fetchAllCategories()
     const forumsIds = categories.map(category => category.forums).flat()
-    this.fetchForums({ ids: forumsIds })
+    await this.fetchForums({ ids: forumsIds })
+    this.ready = true
   }
 }
 </script>
