@@ -15,7 +15,8 @@ import {
   increment,
   onSnapshot
 } from 'firebase/firestore'
-import { db } from '@/helpers/firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { db, auth } from '@/helpers/firebase'
 
 import { docToResource, findById } from '@/helpers'
 
@@ -89,16 +90,22 @@ export default {
 
     return docToResource(updatedThread)
   },
+  async registerUserWithEmailAndPassword (
+    { dispatch },
+    { avatar = null, email, name, username, password }
+  ) {
+    const result = await createUserWithEmailAndPassword(auth, email, password)
+    await dispatch('createUser', { id: result.user.uid, email, name, username, avatar })
+  },
   async createUser ({ commit }, { id, email, name, username, avatar = null }) {
     const registeredAt = serverTimestamp()
     const usernameLower = username.toLowerCase()
     email = email.toLowerCase()
     const user = { avatar, email, name, username, usernameLower, registeredAt }
-    const userRef = await addDoc(collection(db, 'users'), user)
-    // await addDoc(userRef, user)
-    // const newUser = await getDoc(userRef)
-    commit('setItem', { resource: 'users', item: { ...userRef, id: userRef.id } })
-    return docToResource(userRef)
+    const userRef = doc(db, 'users', id)
+    await setDoc(userRef, user)
+    const newUser = await getDoc(userRef)
+    commit('setItem', { resource: 'users', item: { ...newUser.data(), id: newUser.id } })
   },
   updateUser ({ commit }, user) {
     commit('setItem', { resource: 'users', item: user })
