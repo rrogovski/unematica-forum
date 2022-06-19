@@ -1,4 +1,20 @@
-import { collection, doc, query, where, getDoc, getDocs, documentId, setDoc, updateDoc, addDoc, arrayUnion, writeBatch, serverTimestamp, increment, onSnapshot } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  query,
+  where,
+  getDoc,
+  getDocs,
+  documentId,
+  setDoc,
+  updateDoc,
+  addDoc,
+  arrayUnion,
+  writeBatch,
+  serverTimestamp,
+  increment,
+  onSnapshot
+} from 'firebase/firestore'
 import { db } from '@/helpers/firebase'
 
 import { docToResource, findById } from '@/helpers'
@@ -72,6 +88,17 @@ export default {
     commit('setItem', { resource: 'posts', item: updatedPost })
 
     return docToResource(updatedThread)
+  },
+  async createUser ({ commit }, { id, email, name, username, avatar = null }) {
+    const registeredAt = serverTimestamp()
+    const usernameLower = username.toLowerCase()
+    email = email.toLowerCase()
+    const user = { avatar, email, name, username, usernameLower, registeredAt }
+    const userRef = await addDoc(collection(db, 'users'), user)
+    // await addDoc(userRef, user)
+    // const newUser = await getDoc(userRef)
+    commit('setItem', { resource: 'users', item: { ...userRef, id: userRef.id } })
+    return docToResource(userRef)
   },
   updateUser ({ commit }, user) {
     commit('setItem', { resource: 'users', item: user })
