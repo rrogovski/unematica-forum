@@ -15,7 +15,7 @@ import {
   increment,
   onSnapshot
 } from 'firebase/firestore'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { db, auth } from '@/helpers/firebase'
 
 import { docToResource, findById } from '@/helpers'
@@ -96,6 +96,13 @@ export default {
   ) {
     const result = await createUserWithEmailAndPassword(auth, email, password)
     await dispatch('createUser', { id: result.user.uid, email, name, username, avatar })
+  },
+  signInWithEmailAndPassword (context, { email, password }) {
+    return signInWithEmailAndPassword(auth, email, password)
+  },
+  async signOut ({ commit }) {
+    await auth.signOut()
+    commit('setAuthId', null)
   },
   async createUser ({ commit }, { id, email, name, username, avatar = null }) {
     const registeredAt = serverTimestamp()
@@ -234,6 +241,7 @@ export default {
   },
   fetchItems: ({ dispatch }, { ids, emoji, resource }) => {
     process.env.NODE_ENV === 'development' && console.log(`🔥 ${emoji} ${resource}: ids => `, ids)
+    ids = ids || []
 
     return Promise.all(ids.map(id => dispatch('fetchItem', { id, emoji, resource })))
   },

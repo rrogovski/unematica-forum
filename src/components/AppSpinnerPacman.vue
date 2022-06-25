@@ -1,6 +1,6 @@
 <template>
   <div class="spinner-container">
-    <div style="color: #263959; --darkreader-inline-color:#263959;" class="la-pacman la-2x" data-darkreader-inline-color="">
+    <div style="color: var(--secondary); --darkreader-inline-color:var(--secondary);" class="la-pacman la-2x" data-darkreader-inline-color="">
       <div></div>
       <div></div>
       <div></div>

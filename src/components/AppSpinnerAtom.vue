@@ -46,7 +46,7 @@ export default {
     .atom-spinner .spinner-circle {
       display: block;
       position: absolute;
-      color: #263959;
+      color: var(--secondary);
       font-size: calc(60px * 0.24);
       top: 50%;
       left: 50%;
@@ -61,7 +61,7 @@ export default {
       animation-duration: 1s;
       border-left-width: calc(60px / 25);
       border-top-width: calc(60px / 25);
-      border-left-color: #263959;
+      border-left-color: var(--secondary);
       border-left-style: solid;
       border-top-style: solid;
       border-top-color: transparent;

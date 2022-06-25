@@ -9,6 +9,7 @@ import Forum from '@/pages/ForumView'
 import Category from '@/pages/CategoryView'
 import Profile from '@/pages/ProfileView'
 import Register from '@/pages/RegisterView'
+import SignIn from '@/pages/SignInView'
 import store from '@/store'
 
 const routes = [
@@ -80,6 +81,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/signin',
+    name: 'SignIn',
+    component: SignIn
   },
   {
     path: '/:pathMatch(.*)*',

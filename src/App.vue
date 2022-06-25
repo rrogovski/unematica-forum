@@ -45,7 +45,7 @@ export default {
   @import "~nprogress/nprogress.css";
 
   #nprogress .bar {
-    background: #4b81df !important;
+    background: #57AD8D !important;
   }
   .container {
     padding-top: 80px;

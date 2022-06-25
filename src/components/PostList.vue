@@ -219,7 +219,7 @@ export default {
     font-size: 42px;
     font-family: FontAwesome;
     content: "\f10e";
-    color: #263959;
+    color: var(--secondary);
   }
 
   @media (max-width: 820px) {
@@ -270,7 +270,7 @@ export default {
     font-size: 42px;
     font-family: FontAwesome;
     content: "\f10e";
-    color: #263959;
+    color: var(--secondary);
   }
 
   @media (max-width: 820px) {
@@ -329,7 +329,7 @@ export default {
     font-size: 42px;
     font-family: FontAwesome;
     content: "\f10e";
-    color: #263959;
+    color: var(--secondary);
   }
 
   @media (max-width: 820px) {

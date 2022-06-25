@@ -2,7 +2,7 @@
   <header class="header" id="header">
 
         <router-link :to="{ name: 'Home' }" class="logo">
-            <img src="../assets/svg/vueschool-logo.svg">
+            <img src="../assets/svg/unematica.svg">
         </router-link>
 
         <div class="btn-hamburger">
@@ -34,6 +34,15 @@
                         <li class="dropdown-menu-item"><a href="#">Log out</a></li>
                     </ul>
                 </div>
+            </li>
+            <li v-if="authUser" class="navbar-item">
+              <a @click.prevent="$store.dispatch('signOut')">Sair</a>
+            </li>
+            <li v-if="!authUser" class="navbar-item">
+              <router-link :to="{ name: 'SignIn' }">Entrar</router-link>
+            </li>
+            <li v-if="!authUser" class="navbar-item">
+              <router-link :to="{ name: 'Register' }">Criar conta</router-link>
             </li>
         </ul>
 

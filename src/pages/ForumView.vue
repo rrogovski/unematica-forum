@@ -10,7 +10,7 @@
             :to="{ name: 'ThreadCreate', params: { forumId: forum.id } }"
             class="btn-green btn-small"
           >
-            Novo tópico
+            <fa-icon icon="plus" /> Tópico
           </router-link>
       </div>
     </div>
@@ -41,9 +41,10 @@ export default {
       return findById(this.$store.state.forums, this.id)
     },
     threads () {
-      if (!this.forum) return []
+      if (!this.forum || !this.forum.threads) return []
 
-      return this.forum.threads.map(threadId => this.$store.getters.thread(threadId))
+      return this.forum.threads
+        .map(threadId => this.$store.getters.thread(threadId))
     }
   },
   methods: {
