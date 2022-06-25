@@ -24,7 +24,9 @@
         </form>
 
         <div class="push-top text-center">
-            <button class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign in with Google</button>
+            <button @click="signInWithGoogle" class="btn-red btn-xsmall">
+              <i class="fa fa-google fa-btn"></i>Acessar com Google
+            </button>
         </div>
     </div>
   </div>
@@ -49,6 +51,10 @@ export default {
         alert(error.message)
         console.log(error)
       }
+    },
+    async signInWithGoogle () {
+      await this.$store.dispatch('signInWithGoogle')
+      this.$router.push('/')
     }
   },
   created () {

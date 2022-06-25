@@ -15,7 +15,7 @@ import {
   increment,
   onSnapshot
 } from 'firebase/firestore'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { db, auth } from '@/helpers/firebase'
 
 import { docToResource, findById } from '@/helpers'
@@ -99,6 +99,29 @@ export default {
   },
   signInWithEmailAndPassword (context, { email, password }) {
     return signInWithEmailAndPassword(auth, email, password)
+  },
+  async signInWithGoogle ({ dispatch }) {
+    try {
+      const provider = new GoogleAuthProvider()
+      const response = await signInWithPopup(auth, provider)
+      const user = response.user
+      const userDoc = doc(db, 'users', user.uid)
+      if (!userDoc.exists) {
+        return dispatch(
+          'createUser',
+          {
+            id: user.uid,
+            name: user.displayName,
+            email: user.email,
+            username: user.email,
+            avatar: user.photoURL
+          },
+          { root: true }
+        )
+      }
+    } catch (error) {
+      alert(error.message)
+    }
   },
   async signOut ({ commit }) {
     await auth.signOut()
