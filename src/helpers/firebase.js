@@ -12,6 +12,7 @@ const storage = getStorage(firebase)
 const auth = getAuth()
 
 onAuthStateChanged(auth, (user) => {
+  store.dispatch('unsubscribeAuthUserSnapshot')
   if (user) {
     console.log('user => ', user)
     store.dispatch('fetchAuthUser')

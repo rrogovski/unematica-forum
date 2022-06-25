@@ -168,10 +168,13 @@ export default {
   fetchUser: ({ dispatch }, { id }) => dispatch('fetchItem', { resource: 'users', id, emoji: '🙋' }),
   fetchAuthUser: ({ dispatch, state, commit }) => {
     const userId = auth.currentUser?.uid
+    const handleUnsubscribe = (unsubscribe) => {
+      commit('setAuthUserUnsubscribe', unsubscribe)
+    }
 
     if (!userId) return
 
-    dispatch('fetchItem', { resource: 'users', id: userId, emoji: '🙋' })
+    dispatch('fetchItem', { resource: 'users', id: userId, emoji: '🙋', handleUnsubscribe })
     commit('setAuthId', userId)
   },
   // Fetch Multiple Resources
@@ -240,7 +243,7 @@ export default {
       })
     })
   },
-  fetchItem: ({ commit }, { id, emoji, resource }) => {
+  fetchItem: ({ commit }, { id, emoji, resource, handleUnsubscribe = null }) => {
     process.env.NODE_ENV === 'development' && console.log(`🔥 ${emoji} ${resource}: id => `, id)
 
     return new Promise((resolve) => {
@@ -252,7 +255,11 @@ export default {
         resolve(item)
       })
 
-      commit('appendUnsubscribe', { unsubscribe })
+      if (handleUnsubscribe) {
+        handleUnsubscribe(unsubscribe)
+      } else {
+        commit('appendUnsubscribe', { unsubscribe })
+      }
 
       // If dont want to use snapshot
       // getDoc(doc(db, resource, id)).then((docSnap) => {
@@ -271,6 +278,12 @@ export default {
   async unsubscribeAllSnapshots ({ state, commit }) {
     state.unsubscribes.forEach(unsubscribe => unsubscribe())
     commit('clearAllUnsubscribes')
+  },
+  async unsubscribeAuthUserSnapshot ({ state, commit }) {
+    if (state.authUserUnsubscribe) {
+      state.authUserUnsubscribe()
+      commit('setAuthUserUnsubscribe', null)
+    }
   },
   clearItems ({ commit }, { modules = [] }) {
     commit('clearItems', { modules })
