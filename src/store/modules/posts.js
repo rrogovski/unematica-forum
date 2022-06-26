@@ -6,8 +6,7 @@ import {
   doc,
   collection,
   increment,
-  getDoc,
-  updateDoc
+  getDoc
 } from 'firebase/firestore'
 import { findById, makeFetchItemAction, makeFetchItemsAction } from '@/helpers'
 export default {
