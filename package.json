@@ -14,11 +14,18 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "@hennge/vue3-pagination": "^1.0.17",
+    "@vee-validate/i18n": "^4.5.11",
+    "@vee-validate/rules": "^4.5.11",
+    "@vueuse/head": "^0.7.6",
     "core-js": "^3.8.3",
     "dayjs": "^1.11.2",
     "firebase": "^9.8.3",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
+    "vee-validate": "^4.5.11",
     "vue": "^3.2.13",
+    "vue-final-modal": "^3.4.2",
     "vue-router": "4",
     "vue-tippy": "^6.0.0-alpha.58",
     "vuex": "4"
@@ -29,20 +36,29 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "@vue/compiler-sfc": "^3.2.37",
     "@vue/eslint-config-standard": "^6.1.0",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^8.0.3",
     "firestore-export-import": "^1.1.0",
     "sass": "^1.52.1",
-    "sass-loader": "^13.0.0"
+    "sass-loader": "^13.0.0",
+    "vue-cli-plugin-webpack-bundle-analyzer": "^4.0.0"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none"
+  }
 }

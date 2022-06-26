@@ -1,44 +1,52 @@
 <template>
   <div v-if="asyncDataStatus_ready" class="col-full push-top">
+    <h1>
+      Editar <i>{{ thread.title }}</i>
+    </h1>
 
-    <h1>Editar <i>{{ thread.title }}</i></h1>
-
-      <thread-editor :title="thread.title" :text="text" @save="save" @cancel="cancel" />
-
-    </div>
+    <ThreadEditor
+      :title="thread.title"
+      :text="text"
+      @save="save"
+      @cancel="cancel"
+      @dirty="formIsDirty = true" @clean="formIsDirty = false"
+    />
+  </div>
 </template>
-
 <script>
+import ThreadEditor from '@/components/ThreadEditor'
+import { findById } from '@/helpers'
 import { mapActions } from 'vuex'
 import asyncDataStatus from '@/mixins/asyncDataStatus'
-import ThreadEditor from '@/components/ThreadEditor.vue'
 export default {
   components: { ThreadEditor },
   mixins: [asyncDataStatus],
   props: {
-    id: {
-      type: String,
-      required: true
+    id: { type: String, required: true }
+  },
+  data () {
+    return {
+      formIsDirty: false
     }
   },
   computed: {
     thread () {
-      return this.$store.state.threads.find(thread => thread.id === this.id)
+      return findById(this.$store.state.threads.items, this.id)
     },
     text () {
-      const post = this.$store.state.posts.find(p => p.id === this.thread.posts[0])
+      const post = findById(this.$store.state.posts.items, this.thread.posts[0])
       return post ? post.text : ''
     }
   },
   methods: {
-    ...mapActions(['fetchThread', 'fetchPost', 'updateThread']),
+    ...mapActions('threads', ['fetchThread', 'updateThread']),
+    ...mapActions('posts', ['fetchPost']),
     async save ({ title, text }) {
       const thread = await this.updateThread({
         id: this.id,
         title,
         text
       })
-
       this.$router.push({ name: 'ThreadShow', params: { id: thread.id } })
     },
     cancel () {
@@ -49,10 +57,12 @@ export default {
     const thread = await this.fetchThread({ id: this.id })
     await this.fetchPost({ id: thread.posts[0] })
     this.asyncDataStatus_fetched()
+  },
+  beforeRouteLeave () {
+    if (this.formIsDirty) {
+      const confirmed = window.confirm('Tem certeza que deseja sair? As alterações que não foram salvas serão perdidas!')
+      if (!confirmed) return false
+    }
   }
 }
 </script>
-
-<style>
-
-</style>

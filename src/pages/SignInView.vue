@@ -1,37 +1,29 @@
 <template>
   <div class="flex-grid justify-center">
     <div class="col-2">
+      <VeeForm @submit="signIn" class="card card-form">
+        <h1 class="text-center">Login</h1>
 
-        <form @submit.prevent="signIn" class="card card-form">
-            <h1 class="text-center">Login</h1>
+        <AppFormField label="E-mail" name="email" type="email" v-model="form.email" rules="required|email" />
+        <AppFormField label="Password" name="password" type="password" v-model="form.password" rules="required" />
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input v-model="form.email" id="email" type="text" class="form-input">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input v-model="form.password" id="password" type="password" class="form-input">
-            </div>
-
-            <div class="push-top">
-                <button type="submit" class="btn-blue btn-block">Log in</button>
-            </div>
-
-            <div class="form-actions text-right">
-                <router-link :to="{ name: 'Register' }">Criar uma conta?</router-link>
-            </div>
-        </form>
-
-        <div class="push-top text-center">
-            <button @click="signInWithGoogle" class="btn-red btn-xsmall">
-              <i class="fa fa-google fa-btn"></i>Acessar com Google
-            </button>
+        <div class="push-top">
+          <button type="submit" class="btn-blue btn-block">Entrar</button>
         </div>
+
+        <div class="form-actions text-right">
+          <router-link :to="{name: 'Register'}">Criar uma conta?</router-link>
+        </div>
+      </VeeForm>
+
+      <div class="push-top text-center">
+        <button @click="signInWithGoogle" class="btn-red btn-xsmall">
+          <fa-icon icon="globe" class="fa-btn" />Entrar com sua conta Google
+        </button>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data () {
@@ -45,16 +37,19 @@ export default {
   methods: {
     async signIn () {
       try {
-        await this.$store.dispatch('signInWithEmailAndPassword', { ...this.form })
-        this.$router.push('/')
+        await this.$store.dispatch('auth/signInWithEmailAndPassword', { ...this.form })
+        this.successRedirect()
       } catch (error) {
         alert(error.message)
-        console.log(error)
       }
     },
     async signInWithGoogle () {
-      await this.$store.dispatch('signInWithGoogle')
-      this.$router.push('/')
+      await this.$store.dispatch('auth/signInWithGoogle')
+      this.successRedirect()
+    },
+    successRedirect () {
+      const redirectTo = this.$route.query.redirectTo || { name: 'Home' }
+      this.$router.push(redirectTo)
     }
   },
   created () {
@@ -62,7 +57,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

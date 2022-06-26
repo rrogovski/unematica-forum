@@ -1,5 +1,5 @@
 <template>
- <forum-list
+  <ForumList
     v-for="category in categories"
     :key="category.id"
     :forums="getForumsForCategory(category)"
@@ -9,23 +9,24 @@
 </template>
 
 <script>
-import ForumList from './ForumList.vue'
+import ForumList from '@/components/ForumList'
+
 export default {
   components: { ForumList },
   props: {
     categories: {
-      type: Array,
-      required: true
+      required: true,
+      type: Array
     }
   },
   methods: {
     getForumsForCategory (category) {
-      return this.$store.state.forums.filter(forum => forum.categoryId === category.id)
+      return this.$store.state.forums.items.filter(forum => forum.categoryId === category.id)
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

@@ -1448,7 +1448,7 @@ button {
 }
 
 .btn, .btn-blue, .btn-blue-outlined, .btn-brown, .btn-brown-outlined, .btn-green, .btn-green-outlined, .btn-red, .btn-red-outlined, .btn-ghost {
-    min-width: 100px;
+    min-width: 110px;
     padding: 10px 20px;
     border-radius: 5px;
     border: none;
