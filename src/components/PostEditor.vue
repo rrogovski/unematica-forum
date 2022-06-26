@@ -1,7 +1,7 @@
 <template>
   <div class="col-full">
     <VeeForm @submit="save" :key="formKey">
-      <AppFormField as="textarea" name="text" v-model="postCopy.text" rows="10" cols="30" rules="required" />
+      <AppFormField as="textarea" label="Conteúdo" name="text" v-model="postCopy.text" rows="10" cols="30" rules="required" />
       <div class="form-actions">
         <button class="btn-blue">{{post.id ? 'Atualizar' : 'Salvar'}} comentário</button>
       </div>
