@@ -1,6 +1,6 @@
 <template>
   <div v-if="asyncDataStatus_ready" class="container">
-    <h1 class="push-top">Bem-vindo ao Unemática</h1>
+    <h1 class="push-top">Bem-vind@ ao Unemática</h1>
     <CategoryList :categories="categories" />
   </div>
 </template>
