@@ -31,11 +31,6 @@
           <button type="submit" class="btn-blue btn-block">Criar</button>
         </div>
       </VeeForm>
-      <div class="text-center push-top">
-        <button @click="registerWithGoogle" class="btn-red btn-xsmall">
-          <fa-icon icon="globe" class="fa-btn"></fa-icon>Entrar com sua conta Google
-        </button>
-      </div>
     </div>
   </div>
 </template>

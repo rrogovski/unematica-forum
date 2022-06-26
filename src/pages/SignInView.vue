@@ -15,12 +15,6 @@
           <router-link :to="{name: 'Register'}">Criar uma conta?</router-link>
         </div>
       </VeeForm>
-
-      <div class="push-top text-center">
-        <button @click="signInWithGoogle" class="btn-red btn-xsmall">
-          <fa-icon icon="globe" class="fa-btn" />Entrar com sua conta Google
-        </button>
-      </div>
     </div>
   </div>
 </template>

@@ -5,7 +5,17 @@ import { db } from '@/helpers/firebase'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 export default app => {
   defineRule('required', required)
-  defineRule('email', email)
+  defineRule('email', (email) => {
+    if (!email || !email.length) {
+      return true
+    }
+
+    if (!/^[A-Za-z0-9._%+-]+@unemat\.br$/.test(email)) {
+      return 'Use o seu e-mail institucional (seu.nome@unemat.br)'
+    }
+
+    return true
+  })
   defineRule('min', min)
   defineRule('url', url)
   defineRule('unique', async (value, args) => {

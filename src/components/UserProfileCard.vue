@@ -26,7 +26,7 @@
 
       <p v-if="user.website" class="text-large text-center">
         <fa-icon icon="globe" />
-        <a :href="user.website">{{ user.website }}</a>
+        <a :href="user.website" target="_blank">{{ user.website }}</a>
       </p>
     </div>
     <div class="text-center">
