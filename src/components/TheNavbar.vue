@@ -4,9 +4,13 @@
     v-page-scroll="()=> mobileNavMenu = false"
   >
 
-    <router-link :to="{name: 'Home'}" class="logo">
+    <router-link :to="{name: 'Home'}" class="logo" v-if="!['Home'].includes($route.name)">
       <img src="../assets/svg/unematica.svg" alt="logo escrito unemática">
     </router-link>
+
+    <a href="/" class="logo" v-else>
+      <img src="../assets/svg/unematica.svg" alt="logo escrito unemática">
+    </a>
 
     <div class="btn-hamburger" @click="mobileNavMenu = !mobileNavMenu">
       <!-- use .btn-humburger-active to open the menu -->
@@ -94,6 +98,11 @@ export default {
     this.$router.beforeEach((to, from) => {
       this.mobileNavMenu = false
     })
+  },
+  async beforeRouteUpdate(to, from) {
+    console.log('created')
+    // react to route changes...
+    // this.userData = await fetchUser(to.params.id)
   }
 }
 </script>
